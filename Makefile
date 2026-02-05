@@ -64,17 +64,16 @@ trivy-db:
 
 .PHONY: db-fetch-langs
 db-fetch-langs:
-	mkdir -p $(CACHE_DIR)/{ruby-advisory-db,php-security-advisories,nodejs-security-wg,ghsa,cocoapods-specs,bitnami-vulndb,govulndb,k8s-cve-feed,julia}
-	wget -qO - https://github.com/rubysec/ruby-advisory-db/archive/master.tar.gz | tar xz -C $(CACHE_DIR)/ruby-advisory-db --strip-components=1
-	wget -qO - https://github.com/FriendsOfPHP/security-advisories/archive/master.tar.gz | tar xz -C $(CACHE_DIR)/php-security-advisories --strip-components=1
-	wget -qO - https://github.com/nodejs/security-wg/archive/main.tar.gz | tar xz -C $(CACHE_DIR)/nodejs-security-wg --strip-components=1
-	wget -qO - https://github.com/bitnami/vulndb/archive/main.tar.gz | tar xz -C $(CACHE_DIR)/bitnami-vulndb --strip-components=1
-	wget -qO - https://github.com/github/advisory-database/archive/refs/heads/main.tar.gz | tar xz -C $(CACHE_DIR)/ghsa --strip-components=1
-	wget -qO - https://github.com/golang/vulndb/archive/refs/heads/master.tar.gz | tar xz -C $(CACHE_DIR)/govulndb --strip-components=1
+	rm -rf $(CACHE_DIR)/ruby-advisory-db && git clone --depth 1 -b master https://github.com/rubysec/ruby-advisory-db.git $(CACHE_DIR)/ruby-advisory-db
+	rm -rf $(CACHE_DIR)/php-security-advisories && git clone --depth 1 -b master https://github.com/FriendsOfPHP/security-advisories.git $(CACHE_DIR)/php-security-advisories
+	rm -rf $(CACHE_DIR)/nodejs-security-wg && git clone --depth 1 -b main https://github.com/nodejs/security-wg.git $(CACHE_DIR)/nodejs-security-wg
+	rm -rf $(CACHE_DIR)/bitnami-vulndb && git clone --depth 1 -b main https://github.com/bitnami/vulndb.git $(CACHE_DIR)/bitnami-vulndb
+	rm -rf $(CACHE_DIR)/ghsa && git clone --depth 1 -b main https://github.com/github/advisory-database.git $(CACHE_DIR)/ghsa
+	rm -rf $(CACHE_DIR)/govulndb && git clone --depth 1 -b master https://github.com/golang/vulndb.git $(CACHE_DIR)/govulndb
 	## required to convert GHSA Swift repo links to Cocoapods package names
-	wget -qO - https://github.com/CocoaPods/Specs/archive/master.tar.gz | tar xz -C $(CACHE_DIR)/cocoapods-specs --strip-components=1
-	wget -qO - https://github.com/kubernetes-sigs/cve-feed-osv/archive/main.tar.gz | tar xz -C $(CACHE_DIR)/k8s-cve-feed --strip-components=1
-	wget -qO - https://github.com/JuliaLang/SecurityAdvisories.jl/archive/refs/heads/generated/osv.tar.gz | tar xz -C $(CACHE_DIR)/julia --strip-components=1
+	rm -rf $(CACHE_DIR)/cocoapods-specs && git clone --depth 1 -b master https://github.com/CocoaPods/Specs.git $(CACHE_DIR)/cocoapods-specs
+	rm -rf $(CACHE_DIR)/k8s-cve-feed && git clone --depth 1 -b main https://github.com/kubernetes-sigs/cve-feed-osv.git $(CACHE_DIR)/k8s-cve-feed
+	rm -rf $(CACHE_DIR)/julia && git clone --depth 1 -b generated/osv https://github.com/JuliaLang/SecurityAdvisories.jl.git $(CACHE_DIR)/julia
 
 .PHONY: db-build
 db-build: trivy-db
@@ -97,13 +96,8 @@ db-clean:
 
 .PHONY: db-fetch-vuln-list
 db-fetch-vuln-list:
-	mkdir -p $(CACHE_DIR)/vuln-list
-	wget -qO - https://github.com/$(REPO_OWNER)/vuln-list/archive/main.tar.gz | tar xz -C $(CACHE_DIR)/vuln-list --strip-components=1
-	mkdir -p $(CACHE_DIR)/vuln-list-redhat
-	wget -qO - https://github.com/$(REPO_OWNER)/vuln-list-redhat/archive/main.tar.gz | tar xz -C $(CACHE_DIR)/vuln-list-redhat --strip-components=1
-	mkdir -p $(CACHE_DIR)/vuln-list-debian
-	wget -qO - https://github.com/$(REPO_OWNER)/vuln-list-debian/archive/main.tar.gz | tar xz -C $(CACHE_DIR)/vuln-list-debian --strip-components=1
-	mkdir -p $(CACHE_DIR)/vuln-list-nvd
-	wget -qO - https://github.com/$(REPO_OWNER)/vuln-list-nvd/archive/main.tar.gz | tar xz -C $(CACHE_DIR)/vuln-list-nvd --strip-components=1
-	mkdir -p $(CACHE_DIR)/vuln-list-aqua
-	wget -qO - https://github.com/$(REPO_OWNER)/vuln-list-aqua/archive/main.tar.gz | tar xz -C $(CACHE_DIR)/vuln-list-aqua --strip-components=1
+	rm -rf $(CACHE_DIR)/vuln-list && git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list.git $(CACHE_DIR)/vuln-list
+	rm -rf $(CACHE_DIR)/vuln-list-redhat && git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list-redhat.git $(CACHE_DIR)/vuln-list-redhat
+	rm -rf $(CACHE_DIR)/vuln-list-debian && git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list-debian.git $(CACHE_DIR)/vuln-list-debian
+	rm -rf $(CACHE_DIR)/vuln-list-nvd && git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list-nvd.git $(CACHE_DIR)/vuln-list-nvd
+	rm -rf $(CACHE_DIR)/vuln-list-aqua && git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list-aqua.git $(CACHE_DIR)/vuln-list-aqua
