@@ -8,9 +8,7 @@ ASSET_DIR ?= assets
 GOPATH=$(shell go env GOPATH)
 GOBIN=$(GOPATH)/bin
 
-ifndef REPO_OWNER
-    REPO_OWNER=aquasecurity
-endif
+REPO_OWNER := aquasecurity
 
 u := $(if $(update),-u)
 
@@ -64,16 +62,16 @@ trivy-db:
 
 .PHONY: db-fetch-langs
 db-fetch-langs:
-	rm -rf $(CACHE_DIR)/ruby-advisory-db && git clone --depth 1 -b master https://github.com/rubysec/ruby-advisory-db.git $(CACHE_DIR)/ruby-advisory-db
-	rm -rf $(CACHE_DIR)/php-security-advisories && git clone --depth 1 -b master https://github.com/FriendsOfPHP/security-advisories.git $(CACHE_DIR)/php-security-advisories
-	rm -rf $(CACHE_DIR)/nodejs-security-wg && git clone --depth 1 -b main https://github.com/nodejs/security-wg.git $(CACHE_DIR)/nodejs-security-wg
-	rm -rf $(CACHE_DIR)/bitnami-vulndb && git clone --depth 1 -b main https://github.com/bitnami/vulndb.git $(CACHE_DIR)/bitnami-vulndb
-	rm -rf $(CACHE_DIR)/ghsa && git clone --depth 1 -b main https://github.com/github/advisory-database.git $(CACHE_DIR)/ghsa
-	rm -rf $(CACHE_DIR)/govulndb && git clone --depth 1 -b master https://github.com/golang/vulndb.git $(CACHE_DIR)/govulndb
+	rm -rf $(CACHE_DIR)/ruby-advisory-db && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b master https://github.com/rubysec/ruby-advisory-db.git $(CACHE_DIR)/ruby-advisory-db
+	rm -rf $(CACHE_DIR)/php-security-advisories && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b master https://github.com/FriendsOfPHP/security-advisories.git $(CACHE_DIR)/php-security-advisories
+	rm -rf $(CACHE_DIR)/nodejs-security-wg && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b main https://github.com/nodejs/security-wg.git $(CACHE_DIR)/nodejs-security-wg
+	rm -rf $(CACHE_DIR)/bitnami-vulndb && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b main https://github.com/bitnami/vulndb.git $(CACHE_DIR)/bitnami-vulndb
+	rm -rf $(CACHE_DIR)/ghsa && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b main https://github.com/github/advisory-database.git $(CACHE_DIR)/ghsa
+	rm -rf $(CACHE_DIR)/govulndb && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b master https://github.com/golang/vulndb.git $(CACHE_DIR)/govulndb
 	## required to convert GHSA Swift repo links to Cocoapods package names
-	rm -rf $(CACHE_DIR)/cocoapods-specs && git clone --depth 1 -b master https://github.com/CocoaPods/Specs.git $(CACHE_DIR)/cocoapods-specs
-	rm -rf $(CACHE_DIR)/k8s-cve-feed && git clone --depth 1 -b main https://github.com/kubernetes-sigs/cve-feed-osv.git $(CACHE_DIR)/k8s-cve-feed
-	rm -rf $(CACHE_DIR)/julia && git clone --depth 1 -b generated/osv https://github.com/JuliaLang/SecurityAdvisories.jl.git $(CACHE_DIR)/julia
+	rm -rf $(CACHE_DIR)/cocoapods-specs && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b master https://github.com/CocoaPods/Specs.git $(CACHE_DIR)/cocoapods-specs
+	rm -rf $(CACHE_DIR)/k8s-cve-feed && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b main https://github.com/kubernetes-sigs/cve-feed-osv.git $(CACHE_DIR)/k8s-cve-feed
+	rm -rf $(CACHE_DIR)/julia && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b generated/osv https://github.com/JuliaLang/SecurityAdvisories.jl.git $(CACHE_DIR)/julia
 
 .PHONY: db-build
 db-build: trivy-db
@@ -96,8 +94,8 @@ db-clean:
 
 .PHONY: db-fetch-vuln-list
 db-fetch-vuln-list:
-	rm -rf $(CACHE_DIR)/vuln-list && git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list.git $(CACHE_DIR)/vuln-list
-	rm -rf $(CACHE_DIR)/vuln-list-redhat && git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list-redhat.git $(CACHE_DIR)/vuln-list-redhat
-	rm -rf $(CACHE_DIR)/vuln-list-debian && git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list-debian.git $(CACHE_DIR)/vuln-list-debian
-	rm -rf $(CACHE_DIR)/vuln-list-nvd && git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list-nvd.git $(CACHE_DIR)/vuln-list-nvd
-	rm -rf $(CACHE_DIR)/vuln-list-aqua && git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list-aqua.git $(CACHE_DIR)/vuln-list-aqua
+	rm -rf $(CACHE_DIR)/vuln-list && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list.git $(CACHE_DIR)/vuln-list
+	rm -rf $(CACHE_DIR)/vuln-list-redhat && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list-redhat.git $(CACHE_DIR)/vuln-list-redhat
+	rm -rf $(CACHE_DIR)/vuln-list-debian && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list-debian.git $(CACHE_DIR)/vuln-list-debian
+	rm -rf $(CACHE_DIR)/vuln-list-nvd && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list-nvd.git $(CACHE_DIR)/vuln-list-nvd
+	rm -rf $(CACHE_DIR)/vuln-list-aqua && GIT_TERMINAL_PROMPT=0 git clone --depth 1 -b main https://github.com/$(REPO_OWNER)/vuln-list-aqua.git $(CACHE_DIR)/vuln-list-aqua
